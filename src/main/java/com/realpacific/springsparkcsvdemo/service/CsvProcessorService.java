@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
-public class ProcessorService {
+public class CsvProcessorService {
 
     private final JavaSparkContext sc;
     private final ResourceLoader resourceLoader;
@@ -42,8 +42,7 @@ public class ProcessorService {
                 .flatMap(in -> Arrays.asList(in.split("\n")).iterator())
                 .map(line -> {
                     String amountStr = line.split(",")[2];
-                    Integer amount = Integer.valueOf(amountStr);
-                    return amount;
+                    return Integer.valueOf(amountStr);
                 })
                 .reduce(Integer::sum);
     }
