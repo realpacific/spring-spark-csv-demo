@@ -14,7 +14,7 @@ import java.util.Map;
 class ProcessorServiceTest {
 
     @Autowired
-    ProcessorService service;
+    CsvProcessorService service;
 
     @Test
     void totalAmountInADayShouldBeEqualToSumOfIndividualTransactionAmountOnThatDay() {

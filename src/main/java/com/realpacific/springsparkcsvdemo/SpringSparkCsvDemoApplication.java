@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringSparkCsvDemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringSparkCsvDemoApplication.class, args);
+        SpringApplication app = new SpringApplication(SpringSparkCsvDemoApplication.class);
+        app.addListeners(new AppListener());
+        app.run(args);
     }
 
 }
