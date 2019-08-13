@@ -1,21 +1,20 @@
 package com.realpacific.springsparkcsvdemo.streams;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.realpacific.springsparkcsvdemo.entities.DataList;
 import com.realpacific.springsparkcsvdemo.entities.Sales;
+import lombok.val;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.streaming.Durations;
-import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaInputDStream;
-import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.kafka010.ConsumerStrategies;
 import org.apache.spark.streaming.kafka010.KafkaUtils;
 import org.apache.spark.streaming.kafka010.LocationStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import scala.Tuple2;
 
 import java.util.*;
 
@@ -40,11 +39,22 @@ public class SparkStreamListener implements Runnable {
         kafkaParams.put("auto.offset.reset", "latest");
         kafkaParams.put("enable.auto.commit", true);
 
-        Collection<String> topics = Arrays.asList("order");
+        Collection<String> topics = Arrays.asList("output");
 
         JavaInputDStream<ConsumerRecord<String, String>> messages = KafkaUtils.createDirectStream(jsc, LocationStrategies.PreferConsistent(),
                 ConsumerStrategies.Subscribe(topics, kafkaParams));
-        JavaPairDStream<String, String> results = messages.mapToPair(record -> new Tuple2<>(record.key(), record.value()));
+        messages.map(ConsumerRecord::value).foreachRDD(rdd -> {
+
+            List<String> collect = rdd.collect();
+            for (String c : collect) {
+                ObjectMapper mapper = new ObjectMapper();
+                DataList sales = mapper.readValue(c, DataList.class);
+                System.out.println(sales + "!!!");
+            }
+        });
+
+       /* JavaPairDStream<String, String> results = messages.mapToPair(record -> new Tuple2<>(record.key(), record.value()));
+
         JavaDStream<String> lines = results.map(Tuple2::_2);
 
         lines.foreachRDD(
@@ -52,11 +62,11 @@ public class SparkStreamListener implements Runnable {
                     List<String> collect = javaRdd.collect();
                     for (String c : collect) {
                         Gson gson = new Gson();
-                        Sales sales = gson.fromJson(c, Sales.class);
+                        DataList sales = gson.fromJson(c, DataList.class);
                         System.out.println(sales + "!!!");
                     }
                 }
-        );
+        );*/
         jsc.start();
         try {
             jsc.awaitTermination();

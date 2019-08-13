@@ -15,13 +15,13 @@ public class AppController {
 
     @GetMapping("/per-day")
     public Map<String, Integer> getTotalAmountInOneDay() {
-        return service.getTotalAmountInOneDay();
+        return service.calculateTotalAmountInOneDay();
     }
 
 
     @GetMapping("/total")
     public Integer getTotalAmountInvolved() {
-        return service.getSumOfAllAmounts();
+        return service.calculateSumOfAllAmounts();
     }
 
 }
