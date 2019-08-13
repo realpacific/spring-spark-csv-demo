@@ -20,7 +20,7 @@ public class CsvProcessorService {
     private final JavaSparkContext sc;
     private final ResourceLoader resourceLoader;
 
-    public Map<String, Integer> getTotalAmountInOneDay() {
+    public Map<String, Integer> calculateTotalAmountInOneDay() {
         JavaRDD<String> input = inputFromFile();
 
         return input
@@ -36,7 +36,7 @@ public class CsvProcessorService {
     }
 
 
-    public Integer getSumOfAllAmounts() {
+    public Integer calculateSumOfAllAmounts() {
         JavaRDD<String> input = inputFromFile();
         return input
                 .flatMap(in -> Arrays.asList(in.split("\n")).iterator())

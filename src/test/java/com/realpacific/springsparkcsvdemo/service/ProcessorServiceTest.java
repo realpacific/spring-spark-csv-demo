@@ -18,13 +18,13 @@ class ProcessorServiceTest {
 
     @Test
     void totalAmountInADayShouldBeEqualToSumOfIndividualTransactionAmountOnThatDay() {
-        Map<String, Integer> totalAmountInOneDay = service.getTotalAmountInOneDay();
+        Map<String, Integer> totalAmountInOneDay = service.calculateTotalAmountInOneDay();
         Assertions.assertThat(totalAmountInOneDay.get("1/2/09")).isEqualTo(1200 * 40);
     }
 
     @Test
     void totalAmountShouldBeEqualToSumOfAllAmountInTransaction() {
-         Integer totalAmount = service.getSumOfAllAmounts();
+         Integer totalAmount = service.calculateSumOfAllAmounts();
         Assertions.assertThat(totalAmount).isEqualTo(1341200);
     }
 }

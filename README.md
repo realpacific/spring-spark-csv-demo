@@ -26,12 +26,14 @@ Reads test.csv file located on /resources and retrieves useful information from 
    "Latitude":51.5,
    "Longitude":-1.1166667
 }
+``` 
 
-```
 
-## Initialization
+## Starting Kafka brokers
 * `docker-compose up`
 * `Conduktor` to publish message to topic
+* App is subscribed to topic `other`
+
 
 ## References
 * https://www.conduktor.io/

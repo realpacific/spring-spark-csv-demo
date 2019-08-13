@@ -34,3 +34,4 @@ build/
 ##
 zk-single-kafka-single
 checkpoint
+*.jks
