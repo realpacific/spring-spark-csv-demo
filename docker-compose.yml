@@ -17,3 +17,20 @@ services:
       - "2181:2181"
     environment:
       - KAFKA_ADVERTISED_HOST_NAME=zookeeper
+
+  db:
+    image: mysql:5.7
+    container_name: sqldb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "testdb"
+      MYSQL_ROOT_PASSWORD: "secret"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - my-shared-network
+
+
+networks:
+  my-shared-network:
+    driver: "bridge"
